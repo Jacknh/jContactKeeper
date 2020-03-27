@@ -45,8 +45,30 @@ const updateContact = asyncHandler(async (req, res) => {
   res.json({msg: 'Update contact succeed'})
 });
 
+// @desc      Delete contact
+// @route     DELETE  /api/contacts/:id
+// @access    Private
+const deleteContact = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+
+  const contact = await Contact.findById(req.params.id);
+
+  if (!contact) {
+    return res.status(400).json({ msg: "No such contact" });
+  }
+
+  if (contact.user.toString() !== userId.toString()) {
+    return res.status(400).json({ msg: "No auth to delete this contact" });
+  }
+
+  await Contact.findByIdAndRemove(req.params.id);
+
+  res.json({ msg: "Delete contact succeed" });
+})
+
 module.exports = {
   createContact,
   getContacts,
-  updateContact
+  updateContact,
+  deleteContact
 };
