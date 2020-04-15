@@ -15,4 +15,4 @@ app.use("/api/contacts", contact);
 
 app.use(errorHandler);
 
-app.listen(3000, console.log("The server started at port 3000"));
+app.listen(5000, console.log("The server started at port 5000"));
