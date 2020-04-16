@@ -30,7 +30,7 @@ const getContacts = asyncHandler(async (req, res) => {
 const updateContact = asyncHandler(async (req, res) => {
   const userId = req.user._id;
 
-  const contact = await Contact.findById(req.params.id);
+  let contact = await Contact.findById(req.params.id);
 
   if (!contact) {
     return res.status(400).json({ msg: "No such contact" });
@@ -40,9 +40,9 @@ const updateContact = asyncHandler(async (req, res) => {
     return res.status(400).json({ msg: "No auth to update this contact" });
   }
 
-  await Contact.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+  contact = await Contact.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
 
-  res.json({msg: 'Update contact succeed'})
+  res.json({data: contact})
 });
 
 // @desc      Delete contact
